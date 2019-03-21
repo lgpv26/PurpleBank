@@ -1,0 +1,21 @@
+/* You can add global styles to this file, and also import other style files */
+@import '@angular/material/prebuilt-themes/purple-green.css';
+@import "~bootstrap/dist/css/bootstrap.css";
+
+.bgcolor-dialog .mat-dialog-container {
+    background: purple;
+}
+
+.bgcolor-backdrop-dialog {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.full-width {
+    width: 100%;
+}
+
+.pb-bg {
+    background: #7b1fa2;
+    color: white;
+    height: 100vh;
+}

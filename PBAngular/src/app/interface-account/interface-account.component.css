@@ -1,0 +1,65 @@
+.pb-header {
+    height: 100%;
+    margin: 0 auto;
+    max-width: 650px;
+}
+
+.pb-header h1 {
+    font-size: 1.5em;
+    text-transform: uppercase;
+    font-weight: 300;
+
+}
+
+.pb-container-title {
+    width:200px;
+}
+
+.pb-account-info {
+    display: table-cell;
+    float: right;
+    height: 100%;
+}
+
+.pb-img {
+    width: 200px;
+}
+
+.img {
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    background: white;
+}
+
+.pb-balance {
+    font-size: 4em;
+    font-weight: 200;
+    display: block;
+    line-height: 70px;
+}
+
+.pb-icon-eye::after {
+    content: url('../../assets/icons/baseline-remove_red_eye-24px.svg');
+    position: absolute;
+    top: 50px;
+    right: -30px;
+    opacity: .3; 
+}
+
+.pb-content {
+    background-color: #00000031;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.pb-item {
+    width: 150px;
+    margin-bottom: 30px; 
+}
+
+.pb-last {
+    margin: 0;
+}

@@ -1,0 +1,28 @@
+.pb-middle {
+    width: 100%;
+    max-width: 400px;
+    height: 100vh;
+    display: inline-block;
+}
+
+.pb-bg {
+    background: #7b1fa2;
+    color: white;
+}
+
+.pb-title {
+    font-weight: 200;
+}
+
+.pb-title span {
+    font-weight: 400;
+}
+
+.pb-subtitle {
+    font-weight: 300;
+    opacity: .6;
+}
+
+.btn {
+    width: 100%;
+}

@@ -1,0 +1,31 @@
+<section class="container">
+    <h1 mat-dialog-title>Acesse sua conta Purple</h1>
+    <form [formGroup]="form" (ngSubmit)="form.valid && login(form)">
+        <mat-dialog-content>
+            <p>Digite seus dados da sua conta para poder acessá-la.</p>
+            <mat-form-field appearance="fill" class="full-width">
+                <mat-label>CPF:</mat-label>
+                <input formControlName="cpf" matInput placeholder="Digite seu CPF:" (change)="justNumbers('cpf')" type="text">
+                <mat-error *ngIf="form.get('cpf').errors?.required">Este campo é obrigatório.</mat-error>
+                <mat-error *ngIf="form.get('cpf').errors?.cpfValidate">Digie um CPF válido:</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Senha:</mat-label>
+                <input formControlName="password" matInput placeholder="Digite sua senha:" type="password">
+                <mat-error *ngIf="form.get('password').errors?.required">Este campo é obrigatório.</mat-error>
+                <mat-error *ngIf="form.get('password').errors?.minlength">A senha deve ter no mínimo 6 dígitos.</mat-error>
+            </mat-form-field>
+            
+            <div style="float: left">
+                <p>Ainda não tem uma conta? <button mat-flat-button mat-dialog-close (click)="openRegister()">Crie uma conta.</button></p>
+            </div>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+            <div style="float: right;" class="mb-2">
+                <button mat-button mat-dialog-close type="button">Cancelar</button>
+                <button mat-raised-button color="primary" class="ml-3" type="submit">Acessar</button>
+            </div>
+        </mat-dialog-actions>
+    </form>
+</section>

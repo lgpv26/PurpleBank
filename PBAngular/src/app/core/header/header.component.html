@@ -1,0 +1,21 @@
+<nav class="navbar navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand font-weight-bold" style="color: #7b1fa2; font-size: 2em; cursor: pointer" routerLink="/">Purple Bank</a>
+        
+        <div *ngIf="(userAccount$ | async) as userAccount; else login">
+            <button mat-button color="primary" (click)="logout()">Sair da conta</button>
+        </div>
+
+        <ng-template #login>
+            <div>
+                <button mat-raised-button color="primary" (click)="openLoginDialog()">Acessar</button>
+                <button mat-button color="primary" (click)="openRegisterDialog()">Crie uma conta</button>
+            </div>
+        </ng-template>
+
+
+    </div>
+    <div class="fixed-top">
+        <pb-alert-message timeout="10000"></pb-alert-message>
+    </div>
+</nav>

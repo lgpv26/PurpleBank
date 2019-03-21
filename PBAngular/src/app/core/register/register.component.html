@@ -1,0 +1,67 @@
+<section class="container">
+    <h1 mat-dialog-title>Crie uma conta Purple agora!</h1>
+    <form [formGroup]="form" (ngSubmit)="form.valid && register(form)" >
+        <mat-dialog-content>
+            <p>Digite os dados necessários para criar a sua conta Purple :).</p>
+            <mat-form-field appearance="fill" class="full-width" >
+                <mat-label>Nome Completo:</mat-label>
+                <input formControlName="fullName" matInput placeholder="Seu nome completo aqui." type="text">
+                <mat-error *ngIf="form.get('fullName').errors?.required">Este campo é obrigatório.</mat-error>
+                <mat-error *ngIf="form.get('fullName').errors?.minlength">Digite seu nome completo.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Email:</mat-label>
+                <input formControlName="email" matInput placeholder="Digite seu email." type="email">
+                <mat-error *ngIf="form.get('email').errors?.required">Este campo é obrigatório.</mat-error>
+                <mat-error *ngIf="form.get('email').errors?.email">Digite um email válido.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" style="width: 49%; margin-right: 2%">
+                <mat-label>CPF:</mat-label>
+                <input formControlName="cpf" matInput placeholder="Digite seu CPF." (change)="justNumbers('cpf')" type="text">
+                <mat-error *ngIf="form.get('cpf').errors?.required">Este campo é obrigatório.</mat-error>
+                <mat-error *ngIf="form.get('cpf').errors?.cpfValidate">Digite um CPF válido.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" style="width: 49%">
+                <mat-label>Celular:</mat-label>
+                <input formControlName="phone" matInput placeholder="Digite seu celular com DDD." (change)="justNumbers('phone')" type="text">
+                <mat-error *ngIf="form.get('phone').errors?.required">Este campo é obrigatório.</mat-error>
+                <mat-error *ngIf="form.get('phone').errors?.phoneValidation">Digite um celular válido.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" style="width: 49%; margin-right: 2%">
+                <mat-label>Senha:</mat-label>
+                <input formControlName="password" matInput placeholder="Digite sua senha." type="password">
+                <mat-error *ngIf="form.get('password').errors?.required">Este campo é obrigatório.</mat-error>
+                <mat-error *ngIf="form.get('password').errors?.minlength">A senha precisa ter mais de 6 dígitos.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" style="width: 49%">
+                <mat-label>Confirmar Senha:</mat-label>
+                <input formControlName="confirmPassword" matInput [errorStateMatcher]="matcher" placeholder="Digite sua senha novamente." type="password">
+                <mat-error *ngIf="form.get('confirmPassword').errors?.required">Este campo é obrigatório.</mat-error>
+                <mat-error *ngIf="form.errors?.confirmPassword">A senha está diferente.</mat-error>
+                <mat-hint *ngIf="!form.errors?.confirmPassword && !form.get('confirmPassword').errors?.required">Confirmação de senha ok!</mat-hint>
+            </mat-form-field>
+
+            <div>
+                <mat-checkbox formControlName="terms" (change)="openTerms()" (click)="openTerms()">Aceitar termos do contrato.</mat-checkbox>
+                <mat-error *ngIf="form.get('terms').invalid && form.get('terms').touched">Você deve concordar com o contrato.</mat-error>
+            </div>
+            
+            <div style="float: left">
+                <p >Já tem uma conta Purple? <button mat-flat-button mat-dialog-close (click)="openLogin()">Acesse.</button></p>
+            </div>
+        </mat-dialog-content>
+
+        <mat-dialog-actions align="end">
+            <div style="float: right;" class="mb-2">
+                <button mat-button mat-dialog-close type="button">Cancelar</button>
+                <button mat-raised-button color="primary" class="ml-3" type="submit" >Criar conta!</button>
+            </div>
+        </mat-dialog-actions>
+    </form>
+
+</section>
