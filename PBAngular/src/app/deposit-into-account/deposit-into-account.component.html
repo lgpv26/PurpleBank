@@ -1,0 +1,26 @@
+<section>
+    
+    <div class="pb-header">
+        <h1 mat-dialog-title>Quanto deseja guardar?</h1>
+        <form class="mt-4" [formGroup]="depositForm" (ngSubmit)="deposit(depositForm)">
+            <mat-dialog-content>
+                <mat-form-field appearance="fill" class="full-width">
+                    <mat-label>R$:</mat-label>
+                    <input formControlName="value" (keyup)="updateValue(depositForm.get('value').value)" matInput placeholder="Coloque a quantidade que deseja guardar:" type="text">
+                    <mat-error *ngIf="depositForm.get('value').errors?.required">Você precisá colocar um valor.</mat-error>
+                </mat-form-field>
+                <div>
+                    <h3>R$ {{depositForm.get('value').value}}</h3>
+                    <mat-hint style="display: block" [ngClass]="depositForm.get('value').errors?.moneyMinimumValidator ? 'pb-error' : '' ">Valor mínimo: R$10,00.</mat-hint>
+                    <mat-hint [ngClass]="depositForm.get('value').errors?.moneyMaximumValidator ? 'pb-error' : '' ">Valor máximo: R$50.000,00.</mat-hint>
+                </div>
+            </mat-dialog-content>
+            <mat-dialog-actions align="end">
+                <div style="float: right;" class="mb-2">                
+                    <button mat-button mat-dialog-close type="button">Cancelar</button>
+                    <button mat-raised-button color="primary" class="ml-3" type="submit">Gerar boleto</button>
+                </div>
+            </mat-dialog-actions>
+        </form>
+    </div>
+</section>

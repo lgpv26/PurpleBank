@@ -1,0 +1,12 @@
+.pb-header {
+    background-color: #424242;
+    color: white;
+}
+
+.pb-header h1 {
+    font-size: 1.5em;
+}
+
+.pb-error {
+    color: red;
+}

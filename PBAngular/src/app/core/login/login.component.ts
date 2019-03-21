@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit{
                 (err: HttpErrorResponse) => {
                     this.loadingService.stop()
                     console.log(err)
-                    if(err.error) {
+                    if(err.error['message']) {
                         this.alertMessageService.danger(err.error['message'], false)
                         return
                     }

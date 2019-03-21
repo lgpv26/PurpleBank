@@ -6,7 +6,7 @@ import { AuthGuard } from './core/auth/auth.guard';
 
 const ROUTES = [
     {path: '', component: HomeComponent},
-    {path: 'user-account', component: InterfaceAccountComponent, canActivate: [AuthGuard]}
+    {path: 'user-account', component: InterfaceAccountComponent, canActivate: [AuthGuard]},
 ]
 @NgModule({
     imports: [RouterModule.forRoot(ROUTES)],

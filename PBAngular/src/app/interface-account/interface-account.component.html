@@ -21,13 +21,13 @@
         </div>
         <hr>
         <div class="p-5 pb-content">
-            <div class="pb-item">
+            <div class="pb-item" style="cursor: pointer" (click)="openDepositIntoAccount()">
                 Guardar dinheiro na PurpleConta.
             </div>
-            <div class="pb-item">
+            <div class="pb-item" style="cursor: pointer" routerLink="send-money">
                 Mandar dinheiro para alguém.
             </div>
-            <div class="pb-item pb-last">
+            <div class="pb-item pb-last" style="cursor: pointer" routerLink="transaction-history">
                 Histórico de transação.
             </div>
         </div>
