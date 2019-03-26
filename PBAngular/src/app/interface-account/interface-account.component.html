@@ -9,18 +9,24 @@
                     </div>
                 </div>
                 <div class="pb-account-info col text-right align-middle">
-                    <div>
-                        Saldo R$:<span class="pb-balance">00,00</span>
-                        <span class="pb-icon-eye">  </span>
+                    <div *ngIf="(bank$ | async) as bank; else buttonToCreateBank">
+                        <div>
+                            Saldo R$:<span class="pb-balance">{{balanceFormat(bank?.balance)}}</span>
+                            <span class="pb-icon-eye">  </span>
+                        </div>
+                        <hr>
+                        <div>AG {{bank?.agency}}</div>
+                        <div>{{getAccountType(bank?.account_type)}} {{bank?.account}}-{{bank?.account_digit}}</div>
                     </div>
-                    <hr>
-                    <div>AG 3750</div>
-                    <div>CC 704568-9</div>
+                    <ng-template #buttonToCreateBank>
+                        <mat-hint>Segundo nossos registros, você ainda não possuí uma PurpleConta.</mat-hint>
+                        <button mat-raised-button (click)="createBankAccount()">Solicitar abertura da PurpleConta!</button>
+                    </ng-template>
                 </div>
             </div>
         </div>
         <hr>
-        <div class="p-5 pb-content">
+        <div class="p-5 pb-content" *ngIf="userHasBankAccount">
             <div class="pb-item" style="cursor: pointer" (click)="openDepositIntoAccount()">
                 Guardar dinheiro na PurpleConta.
             </div>

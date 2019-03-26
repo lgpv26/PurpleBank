@@ -4,5 +4,6 @@ export interface UserAccountModel {
     cpf: string,
     phone: string,
     password: string,
-    terms: boolean
+    terms: boolean,
+    img: string
 }

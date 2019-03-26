@@ -86,7 +86,8 @@ export class RegisterComponent implements OnInit{
             cpf: formGroup.value['cpf'],
             phone: formGroup.value['phone'],
             password: formGroup.value['password'],
-            terms: formGroup.value['terms']
+            terms: formGroup.value['terms'],
+            img: ''
         }
 
         this.userAccountService.register(userAccount)

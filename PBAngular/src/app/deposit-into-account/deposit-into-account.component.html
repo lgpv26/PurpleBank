@@ -6,13 +6,13 @@
             <mat-dialog-content>
                 <mat-form-field appearance="fill" class="full-width">
                     <mat-label>R$:</mat-label>
-                    <input formControlName="value" (keyup)="updateValue(depositForm.get('value').value)" matInput placeholder="Coloque a quantidade que deseja guardar:" type="text">
-                    <mat-error *ngIf="depositForm.get('value').errors?.required">Você precisá colocar um valor.</mat-error>
+                    <input formControlName="amount" (keyup)="updateValue(depositForm.get('amount').value)" matInput placeholder="Coloque a quantidade que deseja guardar:" type="text">
+                    <mat-error *ngIf="depositForm.get('amount').errors?.required">Você precisá colocar um valor.</mat-error>
                 </mat-form-field>
                 <div>
-                    <h3>R$ {{depositForm.get('value').value}}</h3>
-                    <mat-hint style="display: block" [ngClass]="depositForm.get('value').errors?.moneyMinimumValidator ? 'pb-error' : '' ">Valor mínimo: R$10,00.</mat-hint>
-                    <mat-hint [ngClass]="depositForm.get('value').errors?.moneyMaximumValidator ? 'pb-error' : '' ">Valor máximo: R$50.000,00.</mat-hint>
+                    <h3>R$ {{depositForm.get('amount').value}}</h3>
+                    <mat-hint style="display: block" [ngClass]="depositForm.get('amount').errors?.moneyMinimumValidator ? 'pb-error' : '' ">Valor mínimo: R$10,00.</mat-hint>
+                    <mat-hint [ngClass]="depositForm.get('amount').errors?.moneyMaximumValidator ? 'pb-error' : '' ">Valor máximo: R$50.000,00.</mat-hint>
                 </div>
             </mat-dialog-content>
             <mat-dialog-actions align="end">

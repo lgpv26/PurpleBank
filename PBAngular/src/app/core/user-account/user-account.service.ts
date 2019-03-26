@@ -40,7 +40,6 @@ export class UserAccountService {
     public getUserAccountSubject() {
         this.http.get(`${environment.apiBaseUrl}/userAccount`)
             .subscribe(res => {
-                console.log(res)
                 this.userAccountSubject.next(res['user'])
             })
     }

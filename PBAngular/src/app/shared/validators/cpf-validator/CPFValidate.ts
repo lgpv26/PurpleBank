@@ -30,7 +30,7 @@ function CPFValidateLastDigit(cpf) {
         let total = 0
         let sumResult = []
         
-        for(let i = 11; i > 2; --i) {
+        for(let i = 11; i > 1; --i) {
             sumResult.push(cpfWithoutLastDigit[iArr] * i)
         iArr++
         }
@@ -43,7 +43,7 @@ function CPFValidateLastDigit(cpf) {
 }
 
 function validatorFirstDigit(digit) {
-	return digit > 9 ? '0' : '1'
+	return digit > 9 ? '0' : digit
 }
 
 export function CPFValidate(cpf) {

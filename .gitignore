@@ -15,7 +15,7 @@
 
 # IDEs and editors
 /.idea
-/.vscode
+.vscode
 
 #mongoDB
 /mongoDBServer

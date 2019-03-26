@@ -5,11 +5,12 @@ const jwt = require('jsonwebtoken')
 const cpfValidator = require('../validators/cpf.validator')
 const phoneValidator = require('../validators/phone-validator')
 
+const bankAccount = require('../models/bank-account.model')
+
 const accountUserSchema = new mongoose.Schema({
     fullName: {
         type: String,
         required: 'Seu nome não pode estar vazio.',
-
     },
     email: {
         type: String,
@@ -34,6 +35,9 @@ const accountUserSchema = new mongoose.Schema({
         type: Boolean,
         required: 'É necessário concordar com o contrato.'
     },
+    img: {
+        type: String
+    },
     saltSecret: String
 })
 
@@ -48,7 +52,7 @@ accountUserSchema.path('cpf').validate((cpf) => {
 
 accountUserSchema.path('phone').validate((phoneNumber) => {
     return phoneValidator(phoneNumber)
-})
+}, 'Número de celular inválido.')
 
 accountUserSchema.pre('save', function(next) {
     bcrypt.genSalt((err, salt) => {
@@ -70,6 +74,20 @@ accountUserSchema.methods.generateJWT = function() {
 
 accountUserSchema.methods.verifyPassword = function(password) {
     return bcrypt.compareSync(password, this.password)
+}
+
+accountUserSchema.methods.createAccountNumber = function() {
+    return new Promise((resolve, reject) => {
+        bankAccount.findOne({}).sort({account: -1}).exec((err, res) => {
+            if(!res) {
+                bankAccount.collection.insert({account: 10000})
+                    .then(res => resolve(res))
+                return
+            }
+            resolve(res.account + 1)
+        })
+    })
+    
 }
 
 const AccountUser = mongoose.model('AccountUser', accountUserSchema)

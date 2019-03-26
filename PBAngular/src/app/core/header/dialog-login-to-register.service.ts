@@ -8,7 +8,7 @@ export class DialogLoginToRegisterService {
 
     public openDialog(component) {
         return this.dialogBox.open(component, {
-            width: '75%',
+            width: '95%',
             maxWidth: '700px'
         })
     }
