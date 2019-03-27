@@ -3,10 +3,10 @@ const _ = require('lodash')
 
 const AccountUser = require('../models/user.model')
 const BankAccount = require('../models/bank-account.model')
-const accountUser = new AccountUser()
-const bankAccount = new BankAccount()
+
 
 module.exports.register = (req, res, next) => {
+    const accountUser = new AccountUser()
     accountUser.fullName = req.body.fullName
     accountUser.email = req.body.email
     accountUser.cpf = req.body.cpf
@@ -26,6 +26,8 @@ module.exports.register = (req, res, next) => {
 }
 
 module.exports.createBankAccount = (req, res, next) => {
+    const accountUser = new AccountUser()
+    const bankAccount = new BankAccount()
     accountUser.createAccountNumber()
         .then(accountNumber => {
 
@@ -92,6 +94,26 @@ module.exports.bankAccount = (req, res, next) => {
                 ]
             )})
         })
+}
+
+module.exports.findByBankAccountNumber = (req, res, next) => {
+    BankAccount.findOne({agency: req.query.agency, account: req.query.account, account_digit: req.query.accountDigit},
+        (err, account) => {
+            if(err) return res.status(422).json({status: false, message: 'Algo deu erraso.'})
+            if(!account) return res.status(404).json({status: false, message: 'Essa conta ainda não existe. Revise as informações.'})
+            else return res.status(200).json({status: true, bank_account: _.pick(account,
+                [
+                    'bank_code',
+                    'agency',
+                    'agency',
+                    'account',
+                    'account_digit',
+                    'account_type',
+                    'legal_name'
+                ]
+            )})
+        })
+
 }
 
 

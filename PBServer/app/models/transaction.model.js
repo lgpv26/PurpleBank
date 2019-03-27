@@ -11,9 +11,14 @@ const senderSchema = new mongoose.Schema({
         type: Number,
         required: 'Documento do enviador é obrigatório.'
     },
+    bank_code: {
+        type: Number,
+        required: 'Código do banco é obrigatório.'
+    },
     account: {
         type: Number,
-        required: 'Conta do enviador é obrigatório.'
+        required: 'Conta do enviador é obrigatório.',
+        maxlength: [13, 'Número da conta não pode conter mais de 13 caracteres.']
     },
     account_digit: {
         type: String,
@@ -37,12 +42,16 @@ const receiverSchema = new mongoose.Schema({
         required: 'Nome do recebedor é obrigatório.'
     }, 
     document: {
+        type: Number
+    },
+    bank_code: {
         type: Number,
-        required: 'Documento do recebedor é obrigatório.'
+        required: 'Código do banco é obrigatório.'
     },
     account: {
         type: Number,
-        required: 'Conta do recebedor é obrigatório.'
+        required: 'Conta do recebedor é obrigatório.',
+        maxlength: [13, 'Número da conta não pode conter mais de 13 caracteres.']
     },
     account_digit: {
         type: String,
@@ -66,6 +75,10 @@ const transactionSchema = new mongoose.Schema({
         type: String,
         required: 'O status da transação é obrigatório.'
     },
+    description: {
+        type: String,
+        maxlength: [45, 'A descrição deve ter menos de 45 caracteres.']
+    },
     amount: {
         type: Number,
         required: 'A quantidade deve ser informada.'
@@ -87,12 +100,50 @@ transactionSchema.path('amount').validate((amount) => {
     else return false
 }, 'O valor máximo ou mínimo da transação foi excedido.')
 
-transactionSchema.methods.updateBalance = function(account) {
-    BankAccount.findOne({document_number: account.receiver[0].document})
+transactionSchema.methods.updateBalanceDeposit = function(deposit) {
+    BankAccount.findOne({document_number: deposit.receiver[0].document})
         .then(res => {
             BankAccount.updateOne(
-                {document_number: account.receiver[0].document},
-                {$set: {balance: res.balance += account.amount}},
+                {document_number: deposit.receiver[0].document},
+                {$set: {balance: res.balance += deposit.amount}},
+                (err, doc) => {
+                    if(err) return err
+                    this.status = 'pago'
+                })
+        })
+}
+
+transactionSchema.methods.updateBalanceTransfer = function(transfer) {
+    //account receiver
+    BankAccount.findOne({
+        agency: transfer.receiver[0].agency,
+        account: transfer.receiver[0].account,
+        account_digit: transfer.receiver[0].account_digit}, 
+        (err, res) => {
+            if(err) return err
+            if(!res) return 
+            else BankAccount.updateOne({
+                agency: transfer.receiver[0].agency,
+                account: transfer.receiver[0].account,
+                account_digit: transfer.receiver[0].account_digit}, {
+                    $set: {balance: res.balance += transfer.amount}
+                },
+                (err, doc) => {
+                    if(err) return err
+                    this.status = 'pago'
+                })
+        })
+
+    //account sender
+    BankAccount.findOne({
+        document_number: transfer.sender[0].document},
+        (err, res) => {
+            if(err) return err
+            if(!res) return 
+            else BankAccount.updateOne({
+                document_number: transfer.sender[0].document}, {
+                    $set: {balance: res.balance -= transfer.amount}
+                },
                 (err, doc) => {
                     if(err) return err
                     this.status = 'pago'
