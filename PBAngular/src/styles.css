@@ -13,9 +13,14 @@
 .full-width {
     width: 100%;
 }
+.half-width {
+    width: 49%;
+}
 
 .pb-bg {
     background: #7b1fa2;
     color: white;
     height: 100vh;
 }
+
+

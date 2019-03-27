@@ -4,6 +4,7 @@ import { LoginComponent } from '../login/login.component';
 import { RegisterComponent } from '../register/register.component';
 import { UserAccountService } from '../user-account/user-account.service';
 import { Router } from '@angular/router';
+import { LoadingService } from 'src/app/shared/components/loading/loading.service';
 
 @Component({
     selector: 'pb-header',
@@ -17,7 +18,8 @@ export class HeaderComponent implements OnInit {
     constructor(
         private dialogService: DialogLoginToRegisterService,
         private userAccountService: UserAccountService,
-        private router: Router) {
+        private router: Router,
+        private loadingService: LoadingService) {
     }
 
     ngOnInit() {
@@ -35,6 +37,7 @@ export class HeaderComponent implements OnInit {
     public logout() {
         this.userAccountService.logout()
         this.router.navigate([''])
+        this.loadingService.stop()
     }
 
 }

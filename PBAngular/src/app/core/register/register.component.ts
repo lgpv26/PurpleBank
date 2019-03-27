@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { DialogLoginToRegisterService } from '../header/dialog-login-to-register.service';
 import { LoginComponent } from '../login/login.component';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -12,11 +12,13 @@ import { UserAccountService } from '../user-account/user-account.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AlertMessageService } from 'src/app/shared/components/alert-message/alert-message.service';
 import { LoadingService } from 'src/app/shared/components/loading/loading.service';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
     templateUrl: './register.component.html'
 })
-export class RegisterComponent implements OnInit{
+export class RegisterComponent implements OnInit, OnDestroy{
     
     public form: FormGroup
     public matcher = new MyErrorStateMatcher()
@@ -64,9 +66,10 @@ export class RegisterComponent implements OnInit{
         })
     }
 
+    ngOnDestroy() {}
+
     public openLogin() {
         this.dialogService.openDialog(LoginComponent)
-        this.dialogService.closeAllDialogs()
     }
 
     public openTerms() {
@@ -93,7 +96,9 @@ export class RegisterComponent implements OnInit{
         this.userAccountService.register(userAccount)
             .subscribe(
                 res => {
+                    this.dialogService.closeAllDialogs()
                     this.openLogin()
+                    this.alertMessageService.success('Conta criado com sucesso! Acesse-a.', false)
                 },
                 (err: HttpErrorResponse) => {
                     this.loadingService.stop()

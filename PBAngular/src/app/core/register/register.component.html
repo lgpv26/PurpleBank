@@ -2,7 +2,7 @@
     <h1 mat-dialog-title>Crie uma conta Purple agora!</h1>
     <form [formGroup]="form" (ngSubmit)="form.valid && register(form)" >
         <mat-dialog-content>
-            <p>Digite os dados necessários para criar a sua conta Purple :).</p>
+            <p>Está a poucos passos de ter sua PurpleConta :).</p>
             <mat-form-field appearance="fill" class="full-width" >
                 <mat-label>Nome Completo:</mat-label>
                 <input formControlName="fullName" matInput placeholder="Seu nome completo aqui." type="text">
@@ -17,14 +17,14 @@
                 <mat-error *ngIf="form.get('email').errors?.email">Digite um email válido.</mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="fill" style="width: 49%; margin-right: 2%">
+            <mat-form-field appearance="fill" class="half-width" style="margin-right: 2%">
                 <mat-label>CPF:</mat-label>
                 <input formControlName="cpf" matInput placeholder="Digite seu CPF." (change)="justNumbers('cpf')" type="text">
                 <mat-error *ngIf="form.get('cpf').errors?.required">Este campo é obrigatório.</mat-error>
                 <mat-error *ngIf="form.get('cpf').errors?.cpfValidate">Digite um CPF válido.</mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="fill" style="width: 49%">
+            <mat-form-field appearance="fill" class="half-width">
                 <mat-label>Celular:</mat-label>
                 <input formControlName="phone" matInput placeholder="Digite seu celular com DDD." (change)="justNumbers('phone')" type="text">
                 <mat-error *ngIf="form.get('phone').errors?.required">Este campo é obrigatório.</mat-error>

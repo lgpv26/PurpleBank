@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { UserAccountService } from '../core/user-account/user-account.service';
 import { UserAccountModel } from '../core/user-account/user-account.model';
 import { DialogLoginToRegisterService } from '../core/header/dialog-login-to-register.service';
@@ -7,18 +7,23 @@ import { BankAccountService } from '../core/bank-account/bank-account.service';
 import { BankAccount } from '../core/bank-account/bank-account';
 import { LoadingService } from '../shared/components/loading/loading.service';
 import { AlertMessageService } from '../shared/components/alert-message/alert-message.service';
+import { SendMoneyComponent } from '../send-money/send-money.component';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe'
 
+@AutoUnsubscribe()
 @Component({
     templateUrl: './interface-account.component.html',
     styleUrls: ['./interface-account.component.css']
 })
-export class InterfaceAccountComponent implements OnInit {
+export class InterfaceAccountComponent implements OnInit, OnDestroy {
 
     public userAccountInformations: UserAccountModel
     public userBankAccountInformations: BankAccount
     public userHasBankAccount: boolean = false
 
     public bank$ = this.bankAccountService.bank$
+
+    public showBalance: boolean = false
     
     constructor(private userAccountService: UserAccountService,
         private dialogService: DialogLoginToRegisterService,
@@ -38,11 +43,17 @@ export class InterfaceAccountComponent implements OnInit {
                     console.log(err)
                     this.loadingService.stop()
                 })
-        
     }
+
+    ngOnDestroy() {}
 
     public openDepositIntoAccount() {
         this.dialogService.openDialog(DepositIntoAccountComponent)
+    }
+
+    public openSendMoney() {
+        this.dialogService.closeAllDialogs()
+        this.dialogService.openDialog(SendMoneyComponent)
     }
 
     public createBankAccount() {
@@ -79,7 +90,7 @@ export class InterfaceAccountComponent implements OnInit {
     }
 
     public balanceFormat(number: number) {
-        //if(number == 0) return number
+        if(number == 0) return number
 
         let centavos = number
             .toString()
@@ -90,5 +101,9 @@ export class InterfaceAccountComponent implements OnInit {
             .substring(0, number.toString().length - 2)
 
         return `${withoutCentavos},${centavos}`
+    }
+
+    public toggleBalance() {
+        this.showBalance = !this.showBalance
     }
 }

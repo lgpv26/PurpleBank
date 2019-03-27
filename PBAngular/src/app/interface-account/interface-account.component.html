@@ -10,9 +10,9 @@
                 </div>
                 <div class="pb-account-info col text-right align-middle">
                     <div *ngIf="(bank$ | async) as bank; else buttonToCreateBank">
-                        <div>
-                            Saldo R$:<span class="pb-balance">{{balanceFormat(bank?.balance)}}</span>
-                            <span class="pb-icon-eye">  </span>
+                        <div (click)="toggleBalance()">
+                            Saldo R$:
+                            <span class="pb-balance" [ngClass]="showBalance ? 'show' : 'hide'">{{balanceFormat(bank?.balance)}} <mat-icon style="color: white">remove_red_eye</mat-icon></span> 
                         </div>
                         <hr>
                         <div>AG {{bank?.agency}}</div>
@@ -30,7 +30,7 @@
             <div class="pb-item" style="cursor: pointer" (click)="openDepositIntoAccount()">
                 Guardar dinheiro na PurpleConta.
             </div>
-            <div class="pb-item" style="cursor: pointer" routerLink="send-money">
+            <div class="pb-item" style="cursor: pointer" (click)="openSendMoney()">
                 Mandar dinheiro para alguém.
             </div>
             <div class="pb-item pb-last" style="cursor: pointer" routerLink="transaction-history">

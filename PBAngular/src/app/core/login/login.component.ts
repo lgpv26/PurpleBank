@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { DialogLoginToRegisterService } from '../header/dialog-login-to-register.service';
 import { RegisterComponent } from '../register/register.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -9,11 +9,13 @@ import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AlertMessageService } from 'src/app/shared/components/alert-message/alert-message.service';
 import { LoadingService } from 'src/app/shared/components/loading/loading.service';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
     templateUrl: './login.component.html'
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit, OnDestroy{
 
     public form: FormGroup
 
@@ -38,6 +40,8 @@ export class LoginComponent implements OnInit{
             ]]
         })
     }
+
+    ngOnDestroy() {}
 
     public openRegister() {
         this.dialogService.openDialog(RegisterComponent)

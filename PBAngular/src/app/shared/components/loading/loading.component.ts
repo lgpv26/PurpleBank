@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { LoadingService } from './loading.service';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, delay } from 'rxjs/operators';
 
 @Component({
     selector: 'pb-loading',
@@ -30,6 +30,6 @@ export class LoadingComponent implements OnInit{
 
     ngOnInit() {
         this.isLoading$ = this.loadingService.getLoadingState()
-            .pipe(map(state => state.valueOf()))
+            .pipe(delay(0), map(state => state.valueOf()))
     }
 }

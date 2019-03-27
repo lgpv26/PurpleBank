@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { moneyMininumValidator, moneyMaximumValidator } from '../shared/validators/money/money.validator';
 import { UserAccountService } from '../core/user-account/user-account.service';
@@ -10,13 +10,15 @@ import { Transaction } from '../core/transactions/transaction';
 import { LoadingService } from '../shared/components/loading/loading.service';
 import { AlertMessageService } from '../shared/components/alert-message/alert-message.service';
 import { DialogLoginToRegisterService } from '../core/header/dialog-login-to-register.service';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe'
 
+@AutoUnsubscribe()
 @Component({
     selector: 'pb-deposit-into-account',
     templateUrl: './deposit-into-account.component.html',
     styleUrls: ['./deposit-into-account.component.css']
 })
-export class DepositIntoAccountComponent implements OnInit {
+export class DepositIntoAccountComponent implements OnInit, OnDestroy {
 
     public depositForm: FormGroup
     public userAccountInfo: UserAccountModel
@@ -39,6 +41,8 @@ export class DepositIntoAccountComponent implements OnInit {
             ]]
         })
     }
+
+    ngOnDestroy() {}
 
     private currencyRealFormat(value) {
         var valueFormat = value;
@@ -64,7 +68,7 @@ export class DepositIntoAccountComponent implements OnInit {
     //deposita na conta (diminuir esse encapsulamento no futuro)
     public deposit(form: FormGroup) {
         let amount = form.get('amount').value
-        const transaction: Transaction = {
+        const transaction: Transaction | any = {
             status: 'pago',
             amount: parseInt(amount.replace(',', '').replace('.', '')),
             creation_date: new Date()
@@ -73,21 +77,24 @@ export class DepositIntoAccountComponent implements OnInit {
             .subscribe(
                 res => {
                     this.userAccountInfo = res['user']
+                    this.loadingService.stop()
                     this.bankAccountService.get(this.userAccountInfo)
                         .subscribe(
                             bankObject => {
                                 this.userBankAccountInfo = bankObject['bank_account']
+                                this.loadingService.stop()
                                 this.transactionService.deposit(this.userAccountInfo, this.userBankAccountInfo, transaction)
                                     .subscribe(
                                         _ => {
                                             this.bankAccountService.getSubject(this.userAccountInfo)
+                                            this.loadingService.stop()
                                             this.alertService.success(`Valor depositado com sucesso!`, false)
                                             this.dialogService.closeAllDialogs()
                                         },
                                         err => {
                                             console.log(err)
                                             this.loadingService.stop()
-                                            if(err.error) this.alertService.danger(err.error.message, false)
+                                            if(err.error) this.alertService.danger(err.error, false)
                                             else this.alertService.warning('Algo deu errado. Tente novamente!', false)
                                         })
                             },

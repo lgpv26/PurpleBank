@@ -1,3 +1,108 @@
 <section>
-    <div class="container"></div>
+    <div>
+        <div>
+            <div style="float: right; cursor: pointer" (click)="closeTransferDialog()">
+                <mat-icon>close</mat-icon>
+            </div>
+            <h1 mat-dialog-title>Transferência</h1>
+        </div>
+        <mat-dialog-content>
+
+            <mat-vertical-stepper [linear]="true">                        
+                <mat-step [stepControl]="formReceiver" state="checked">
+                    <form [formGroup]="formReceiver">
+                        <ng-template matStepLabel>Para quem enviará o dinheiro?</ng-template>
+    
+                        <mat-form-field appearance="fill" class="full-width">
+                            <mat-label>Apelido (Opcional):</mat-label>
+                            <input formControlName="nickname" matInput placeholder="Dê um apelido carinhoso." type="text">
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="fill" style="width: 24%; margin-right: 2%">
+                            <mat-label>Agência:</mat-label>
+                            <input formControlName="agency" matInput placeholder="Sem o digito*." type="text" >
+                            <mat-error *ngIf="formReceiver.get('agency').errors?.required">Obrigatório*</mat-error>
+                            <mat-error *ngIf="formReceiver.get('agency').errors?.maxlength">Tamanho excedido.</mat-error>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="fill" style="width: 56%; margin-right: 2%">
+                            <mat-label>Nº da Conta:</mat-label>
+                            <input formControlName="account" matInput placeholder="Digite o número da conta." type="text">
+                            <mat-error *ngIf="formReceiver.get('account').errors?.required">Obrigatório*</mat-error>
+                            <mat-error *ngIf="formReceiver.get('account').errors?.maxlength">Tamanho excedido.</mat-error>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="fill" style="width: 16%">
+                            <mat-label>Dígito:</mat-label>
+                            <input formControlName="account_digit" matInput placeholder="Dígito da conta." type="text">
+                            <mat-error *ngIf="formReceiver.get('account_digit').errors?.required">Obrigatório*</mat-error>
+                            <mat-error *ngIf="formReceiver.get('account_digit').errors?.maxlength">Tamanho excedido.</mat-error>
+                        </mat-form-field>
+        
+                        <div class="mb-3">
+                            <button mat-button type="button">+ Adicionar aos contatos</button>
+                        </div>
+                        
+                        <div style="float: right">
+                            <div *ngIf="accountReceiverFound; else checkAccount">
+                                <button mat-raised-button color="accent" matStepperNext type="submit">Continuar</button>
+                            </div>
+                            <ng-template #checkAccount>
+                                <button mat-button (click)="searchReceiver()">Checkar conta</button>
+                            </ng-template>
+                        </div>
+                    </form>
+                </mat-step>
+    
+                <mat-step [stepControl]="formAmountSend" state="checked">
+                    <form [formGroup]="formAmountSend">
+                        <ng-template matStepLabel>Quanto deseja enviar?</ng-template>
+        
+                        <mat-form-field appearance="fill" class="full-width">
+                            <mat-label>R$:</mat-label>
+                            <input formControlName="amount" matInput (keyup)="updateValue(formAmountSend.get('amount').value)" placeholder="Digite o valor que deseja enviar." type="text">
+                            <mat-error *ngIf="formAmountSend.get('amount').errors?.required">Você precisa informar um valor.</mat-error>
+                            <mat-error *ngIf="formAmountSend.get('amount').errors?.moneyMinimumValidator">O valor mínimo é de R$10,00.</mat-error>
+                            <mat-error *ngIf="formAmountSend.get('amount').errors?.moneyMaximumValidator">O valor máximo é de R$50.000,00.</mat-error>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="fill" class="full-width">
+                            <mat-label>Descrição da Transferência:</mat-label>
+                            <textarea formControlName="description" matInput placeholder="Adicione uma descrição para se organizar melhor. Opcional."></textarea>
+                            <mat-error *ngIf="formAmountSend.get('description').errors?.maxlength">Descrição muito longa.</mat-error>
+                        </mat-form-field>
+    
+                        <div style="float: right">
+                            <button mat-button matStepperPrevious>Voltar</button>
+                            <button mat-raised-button color="primary" matStepperNext (click)="saveTransfer()">Continuar</button>
+                        </div>
+                    </form>
+                </mat-step>
+    
+                <mat-step state="checked">
+                    <ng-template matStepLabel>Está tudo certo?</ng-template>
+                    <div>
+                        <mat-hint>Titular:</mat-hint> {{transaction?.receiver.legal_name}} <br>
+                        <mat-hint>Agência:</mat-hint> {{transaction?.receiver.agency}} <br>
+                        <mat-hint>Nº da Conta:</mat-hint> {{transaction?.receiver.account}}-{{transaction?.receiver.account_digit}} <br>
+                        <mat-hint>Tipo:</mat-hint> {{getAccountType(transaction?.receiver.account_type)}} <br>
+                        <hr>
+                        <mat-hint>Valor:</mat-hint> R${{currencyRealFormat(transaction?.amount)}} <br>
+                        <mat-hint>Descrição:</mat-hint> {{transaction?.description}} 
+                    </div>
+
+                    <div style="float: right" class="mt-2">
+                        <button mat-button matStepperPrevious>Voltar</button>
+                        <button mat-raised-button color="primary" (click)="transfer()">Transferir</button>
+                    </div>
+                </mat-step>
+
+                <ng-template matStepperIcon="checked">
+                    <mat-icon>checked</mat-icon>
+                </ng-template>
+            </mat-vertical-stepper>
+
+        </mat-dialog-content>
+
+    </div>
 </section>

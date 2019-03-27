@@ -1,8 +1,7 @@
 <section>
-    
     <div class="pb-header">
         <h1 mat-dialog-title>Quanto deseja guardar?</h1>
-        <form class="mt-4" [formGroup]="depositForm" (ngSubmit)="deposit(depositForm)">
+        <form class="mt-4" [formGroup]="depositForm" (ngSubmit)="depositForm.valid && deposit(depositForm)">
             <mat-dialog-content>
                 <mat-form-field appearance="fill" class="full-width">
                     <mat-label>R$:</mat-label>

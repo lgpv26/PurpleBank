@@ -12,4 +12,8 @@ export class TransactionService {
     public deposit(userAccount: UserAccountModel, bankAccount: BankAccount, transaction: Transaction) {
         return this.http.post(`${environment.apiBaseUrl}/deposit`, {userAccount, bankAccount, transaction})
     }
+
+    public transfer(transaction: Transaction) {
+        return this.http.post(`${environment.apiBaseUrl}/transfer`, {transaction})
+    }
 }
