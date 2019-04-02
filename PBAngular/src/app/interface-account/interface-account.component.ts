@@ -21,7 +21,6 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 export class InterfaceAccountComponent implements OnInit, OnDestroy {
 
     public userAccountInformations: UserAccountModel
-    //public userBankAccountInformations: BankAccount
     public userHasBankAccount: boolean = false
 
     public bank$ = this.bankAccountService.bank$

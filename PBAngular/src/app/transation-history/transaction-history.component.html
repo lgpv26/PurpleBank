@@ -2,7 +2,10 @@
     <h1 mat-dialog-title>Histórico de transações</h1>
     <mat-dialog-content>
         <div *ngIf="transactions?.length != 0; else noTransactions" class="pb-container">
-            <div *ngFor="let transaction of transactions" class="pb-container-transaction">
+
+            <pb-search-transactions class="full-width" (onTyping)="filter = $event"></pb-search-transactions>
+
+            <div *ngFor="let transaction of transactions | filterByDescription: filter" class="pb-container-transaction">
                 <div>
                     <div class="pb-header-transaction p-3  pb-1">
                         <div>
@@ -26,6 +29,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
 
         <ng-template #noTransactions>

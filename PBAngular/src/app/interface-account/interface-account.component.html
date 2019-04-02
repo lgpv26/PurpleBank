@@ -48,15 +48,19 @@
         <hr>
         <div class="p-5 pb-content" *ngIf="userHasBankAccount">
             <div class="pb-item" style="cursor: pointer" (click)="openDepositIntoAccount()">
+                <mat-icon style="font-size: 100px; display: inline">arrow_downward</mat-icon>
                 Depositar na PurpleConta
             </div>
             <div class="pb-item" style="cursor: pointer" (click)="openSendMoney()">
+                <mat-icon style="font-size: 100px; display: inline">swap_horiz</mat-icon>
                 Transferir para outra PurpleConta
             </div>
             <div class="pb-item" style="cursor: pointer" (click)="openTransactionHistory()">
+                <mat-icon style="font-size: 100px; display: inline">history</mat-icon>
                 Histórico de transação
             </div>
             <div class="pb-item pb-last" style="cursor: pointer" (click)="openContacts()">
+                <mat-icon style="font-size: 100px; display: inline">people</mat-icon>
                 Contatos
             </div>
         </div>

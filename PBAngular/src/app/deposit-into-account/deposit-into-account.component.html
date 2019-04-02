@@ -1,6 +1,6 @@
 <section>
     <div class="pb-header">
-        <h1 mat-dialog-title>Quanto deseja guardar?</h1>
+        <h1 mat-dialog-title>Quanto deseja depositar?</h1>
         <form class="mt-4" [formGroup]="depositForm" (ngSubmit)="depositForm.valid && deposit(depositForm)">
             <mat-dialog-content>
                 <mat-form-field appearance="fill" class="full-width">
@@ -17,7 +17,7 @@
             <mat-dialog-actions align="end">
                 <div style="float: right;" class="mb-2">                
                     <button mat-button mat-dialog-close type="button">Cancelar</button>
-                    <button mat-raised-button color="primary" class="ml-3" type="submit">Gerar boleto</button>
+                    <button mat-raised-button color="primary" class="ml-3" type="submit">Depositar</button>
                 </div>
             </mat-dialog-actions>
         </form>

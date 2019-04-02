@@ -51,6 +51,11 @@
 .pb-item {
     width: 150px;
     margin-bottom: 30px; 
+    transition: all .5s ease;
+}
+
+.pb-item:hover {
+    transform: scale3d(1.1,1.1,1.1);
 }
 
 .pb-last {
@@ -69,5 +74,5 @@
 .img mat-icon:hover {
     filter: invert(100%);
     transition: all .5s ease;
-
 }
+

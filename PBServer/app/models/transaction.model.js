@@ -8,7 +8,7 @@ const senderSchema = new mongoose.Schema({
         required: 'Nome do enviador é obrigatório.'
     }, 
     document: {
-        type: Number,
+        type: String,
         required: 'Documento do enviador é obrigatório.'
     },
     bank_code: {
@@ -42,7 +42,7 @@ const receiverSchema = new mongoose.Schema({
         required: 'Nome do recebedor é obrigatório.'
     }, 
     document: {
-        type: Number
+        type: String
     },
     bank_code: {
         type: Number,

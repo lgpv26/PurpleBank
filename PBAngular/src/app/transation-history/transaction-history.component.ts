@@ -20,6 +20,8 @@ export class TransactionHistoryComponent implements OnInit, OnDestroy {
     public transactions: Transaction[]
     public bankInfo: BankAccount
 
+    public filter: string = ''
+
     constructor(private transactionService: TransactionService,
         private userService: UserAccountService,
         private bankAccountService: BankAccountService,
