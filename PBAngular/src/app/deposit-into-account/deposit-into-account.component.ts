@@ -11,6 +11,7 @@ import { LoadingService } from '../shared/components/loading/loading.service';
 import { AlertMessageService } from '../shared/components/alert-message/alert-message.service';
 import { DialogLoginToRegisterService } from '../core/header/dialog-login-to-register.service';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe'
+import { switchMap, concatMap } from 'rxjs/operators';
 
 @AutoUnsubscribe()
 @Component({
@@ -22,7 +23,6 @@ export class DepositIntoAccountComponent implements OnInit, OnDestroy {
 
     public depositForm: FormGroup
     public userAccountInfo: UserAccountModel
-    public userBankAccountInfo: BankAccount
 
     constructor(private formBuilder: FormBuilder,
         private userAccountService: UserAccountService,
@@ -65,7 +65,6 @@ export class DepositIntoAccountComponent implements OnInit, OnDestroy {
         this.depositForm.get('amount').setValue(this.currencyRealFormat(value))
     }
 
-    //deposita na conta (diminuir esse encapsulamento no futuro)
     public deposit(form: FormGroup) {
         let amount = form.get('amount').value
         const transaction: Transaction | any = {
@@ -74,37 +73,18 @@ export class DepositIntoAccountComponent implements OnInit, OnDestroy {
             creation_date: new Date()
         } 
         this.userAccountService.getUserAccount()
+            .pipe(
+                concatMap(res => {
+                    this.userAccountInfo = res['user']
+                    return this.bankAccountService.get(res['user'])
+                }),
+                concatMap(res => this.transactionService.deposit(res['bank_account'], transaction)))
             .subscribe(
                 res => {
-                    this.userAccountInfo = res['user']
+                    this.bankAccountService.getSubject(this.userAccountInfo)
+                    this.alertService.success('Deposito realizado com sucesso!', false)
                     this.loadingService.stop()
-                    this.bankAccountService.get(this.userAccountInfo)
-                        .subscribe(
-                            bankObject => {
-                                this.userBankAccountInfo = bankObject['bank_account']
-                                this.loadingService.stop()
-                                this.transactionService.deposit(this.userAccountInfo, this.userBankAccountInfo, transaction)
-                                    .subscribe(
-                                        _ => {
-                                            this.bankAccountService.getSubject(this.userAccountInfo)
-                                            this.loadingService.stop()
-                                            this.alertService.success(`Valor depositado com sucesso!`, false)
-                                            this.dialogService.closeAllDialogs()
-                                        },
-                                        err => {
-                                            console.log(err)
-                                            this.loadingService.stop()
-                                            if(err.error) this.alertService.danger(err.error, false)
-                                            else this.alertService.warning('Algo deu errado. Tente novamente!', false)
-                                        })
-                            },
-                            err => {
-                                console.log(err)
-                                this.loadingService.stop()
-                                if(err.error) this.alertService.danger(err.error.message, false)
-                                else this.alertService.warning('Algo deu errado. Tente novamente!', false)
-                            }
-                        )
+                    this.dialogService.closeAllDialogs()
                 },
                 err => {
                     console.log(err)

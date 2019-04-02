@@ -1,3 +1,5 @@
+import { ContactModel } from './contact.model';
+
 export interface UserAccountModel {
     fullName: string,
     email: string, 
@@ -5,5 +7,6 @@ export interface UserAccountModel {
     phone: string,
     password: string,
     terms: boolean,
-    img: string
+    img: string,
+    contacts?: [ContactModel] 
 }

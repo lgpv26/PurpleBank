@@ -1,5 +1,42 @@
 <section>
-    <div class="container">
+    <h1 mat-dialog-title>Histórico de transações</h1>
+    <mat-dialog-content>
+        <div *ngIf="transactions?.length != 0; else noTransactions" class="pb-container">
+            <div *ngFor="let transaction of transactions" class="pb-container-transaction">
+                <div>
+                    <div class="pb-header-transaction p-3  pb-1">
+                        <div>
+                            <div *ngIf="transaction.description?.substring(0,3) == 'DEP'; else tedIcon" style="display: inline-block">
+                                <mat-icon class="mr-5" style="font-size: 56px" color="primary">arrow_downward</mat-icon>
+                            </div>
+                            <ng-template #tedIcon>
+                                <mat-icon class="mr-5" style="font-size: 56px" color="primary">swap_horiz</mat-icon>
+                            </ng-template>
+                            <div>{{transaction?.description}}</div>
+                        </div>
+                        <div style="font-size: 1.2em" class="{{transaction?.sender[0].name == bankInfo?.legal_name && transaction?.sender[0].name != transaction?.receiver[0].name ? 'cash-outflow' : 'money-deposit'}}">R${{formatAmount(transaction?.amount)}}</div>
+                    </div>
+                    <div class="pb-body-transaction p-3">
+                        <table style="width: 100%">
+                            <tr><th>Descrição</th><td class="text-right">{{transaction?.description}}</td></tr>
+                            <tr><th>Data</th><td class="text-right">{{formatDate(transaction?.creation_date)}}</td></tr>
+                            <tr><th>De</th><td class="text-right">{{transaction?.sender[0].name}}</td></tr>
+                            <tr *ngIf="transaction?.sender[0].name != transaction?.receiver[0].name"><th>Para</th><td class="text-right">{{transaction?.receiver[0].name}}</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    </div>
+        <ng-template #noTransactions>
+            <div>
+                <small>Não existe nenhum Histórico de transação para está conta.</small>
+            </div>
+        </ng-template>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <div>
+            <button mat-button mat-dialog-close="true" cdkFocusInitial>Fechar</button>
+        </div>
+    </mat-dialog-actions>
 </section>

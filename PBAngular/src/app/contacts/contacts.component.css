@@ -1,0 +1,12 @@
+.pb-contact {
+    margin: .4em .4em;
+    width: 47%;
+    color: black;
+    background: white;
+    border-radius: 5px;
+    box-shadow: black 1px 1px 5px;
+    padding: 1.3em;
+    text-transform: uppercase;
+    font-size: .8em;
+}
+

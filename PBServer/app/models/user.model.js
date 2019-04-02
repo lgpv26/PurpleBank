@@ -7,6 +7,21 @@ const phoneValidator = require('../validators/phone-validator')
 
 const bankAccount = require('../models/bank-account.model')
 
+const contactSchema = new mongoose.Schema({
+    nickname: {
+        type: String,
+    },
+    agency: {
+        type: Number,
+    },
+    account: {
+        type: Number,
+    },
+    account_digit: {
+        type: Number,
+    }
+})
+
 const accountUserSchema = new mongoose.Schema({
     fullName: {
         type: String,
@@ -38,6 +53,7 @@ const accountUserSchema = new mongoose.Schema({
     img: {
         type: String
     },
+    contacts: [contactSchema],
     saltSecret: String
 })
 

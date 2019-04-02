@@ -3,6 +3,7 @@
         <a class="navbar-brand font-weight-bold" style="color: #7b1fa2; font-size: 2em; cursor: pointer" routerLink="/">Purple Bank</a>
         
         <div *ngIf="(userAccount$ | async) as userAccount; else login">
+            <button mat-raised-button color="primary" routerLink="user-account">Perfil</button>
             <button mat-button color="primary" (click)="logout()">Sair da conta</button>
         </div>
 

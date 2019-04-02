@@ -1,0 +1,86 @@
+<section>
+    <h1 mat-dialog-title>Contatos</h1>
+    <div>
+        <mat-dialog-content>
+            <mat-tab-group dynamicHeight>
+
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon class="mr-2">people</mat-icon>
+                        Contatos
+                    </ng-template>
+                    <div *ngIf="!contacts.length == 0; else noContacts"  style="display: flex; flex-wrap: wrap">
+
+                        <pb-search-contact (onTyping)="filter = $event" [value]="filter" class="full-width"></pb-search-contact>
+
+                        <div onMouseHover *ngFor="let contact of contacts | filterByNickname: filter" class="pb-contact" >
+                            <div>
+                                <div style="float: right; cursor: pointer">
+                                    <mat-icon (click)="removeContact(contact._id)">delete</mat-icon>
+                                </div>
+                                <div (click)="toTransfer(contact)" style="cursor: pointer">
+                                    <div>
+                                        <div style="color: #7b1fa2; font-weight: 500; font-size: 1.3em">{{contact.nickname}}</div>
+                                    </div>
+                                    <div>AG: {{contact.agency}}</div> 
+                                    <div>Conta: {{contact.account}}-{{contact.account_digit}}</div>
+                                    <span class="text-muted text-lowercase" style="font-size: .9em">Clique para tranferir</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <ng-template #noContacts>
+                        Você não possuí nenhum contato.
+                    </ng-template>
+                </mat-tab>
+
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon class="mr-2">person_add</mat-icon>
+                        Adicionar contatos
+                    </ng-template>
+                    <div>
+                        <form [formGroup]="formContacts" >
+        
+                            <mat-form-field appearance="fill" class="full-width">
+                                <mat-label>Apelido:</mat-label>
+                                <input formControlName="nickname" matInput placeholder="Dê um apelido carinhoso." type="text">
+                                <mat-error *ngIf="formContacts.get('nickname').errors?.required">Obrigatório*</mat-error>
+                            </mat-form-field>
+            
+                            <mat-form-field appearance="fill" style="width: 24%; margin-right: 2%">
+                                <mat-label>Agência:</mat-label>
+                                <input formControlName="agency" matInput placeholder="Sem o digito*." type="text" >
+                                <mat-error *ngIf="formContacts.get('agency').errors?.required">Obrigatório*</mat-error>
+                                <mat-error *ngIf="formContacts.get('agency').errors?.maxlength">Tamanho excedido.</mat-error>
+                            </mat-form-field>
+            
+                            <mat-form-field appearance="fill" style="width: 56%; margin-right: 2%">
+                                <mat-label>Nº da Conta:</mat-label>
+                                <input formControlName="account" matInput placeholder="Digite o número da conta." type="text">
+                                <mat-error *ngIf="formContacts.get('account').errors?.required">Obrigatório*</mat-error>
+                                <mat-error *ngIf="formContacts.get('account').errors?.maxlength">Tamanho excedido.</mat-error>
+                            </mat-form-field>
+            
+                            <mat-form-field appearance="fill" style="width: 16%">
+                                <mat-label>Dígito:</mat-label>
+                                <input formControlName="account_digit" matInput placeholder="Dígito da conta." type="text">
+                                <mat-error *ngIf="formContacts.get('account_digit').errors?.required">Obrigatório*</mat-error>
+                                <mat-error *ngIf="formContacts.get('account_digit').errors?.maxlength">Tamanho excedido.</mat-error>
+                            </mat-form-field>
+
+                            <div style="float: right">
+                                <div>
+                                    <button mat-raised-button color="primary" (click)="formContacts.valid && addContact()">+ Adicionar</button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-dialog-content>
+    </div>
+</section>

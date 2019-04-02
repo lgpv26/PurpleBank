@@ -39,9 +39,11 @@
                             <mat-error *ngIf="formReceiver.get('account_digit').errors?.maxlength">Tamanho excedido.</mat-error>
                         </mat-form-field>
         
-                        <div class="mb-3">
-                            <button mat-button type="button">+ Adicionar aos contatos</button>
-                        </div>
+                        <!--
+                            <div class="mb-3">
+                                <button mat-button type="button" (click)="addContact()">+ Adicionar aos contatos</button>
+                            </div>
+                        -->
                         
                         <div style="float: right">
                             <div *ngIf="accountReceiverFound; else checkAccount">

@@ -11,6 +11,8 @@ import { DialogLoginToRegisterService } from '../core/header/dialog-login-to-reg
 import { TransactionService } from '../core/transactions/transaction.service';
 import { UserAccountModel } from '../core/user-account/user-account.model';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe'
+import { concatMap } from 'rxjs/operators';
+import { ContactModel } from '../core/user-account/contact.model';
 
 @AutoUnsubscribe()
 @Component({
@@ -26,6 +28,7 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
     public sender: BankAccount
 
     private user: UserAccountModel
+    public contact: ContactModel
 
     public accountReceiverFound: boolean = false
     
@@ -66,17 +69,51 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
             ]]
         })
 
-        this.userService.userAccount$
-            .subscribe(user => {
-                this.user = user
-                this.bankAccountService.get(user)
-                    .subscribe(res => {
-                        this.sender = res['bank_account']
-                    })
-            })
+        this.userService.getUserAccount()
+            .pipe(
+                concatMap(res => {
+                    this.user = res['user']
+                    this.userService.contact$
+                        .subscribe(res => this.contact = res)
+                    return this.bankAccountService.get(this.user)
+                }))
+            .subscribe(
+                res => {
+                    this.setContactToTransfer()
+                    this.sender = res['bank_account']
+                },
+                err => {
+                    console.log(err)
+                    this.loadingService.stop()
+                    this.alertService.warning('Sua sessão expirou. Tente novamente.', false)
+                    this.closeTransferDialog()
+                })
+
     }
 
-    ngOnDestroy() {}
+    ngOnDestroy() {
+        this.userService.setContactToTransfer(null)
+    }
+
+    public setContactToTransfer() {
+        if(this.contact) {
+            this.formReceiver.get('nickname').setValue(this.contact.nickname)
+            this.formReceiver.get('agency').setValue(this.contact.agency)
+            this.formReceiver.get('account').setValue(this.contact.account)
+            this.formReceiver.get('account_digit').setValue(this.contact.account_digit)
+        }
+    } 
+
+    // public addContact() {
+    //     const contact: ContactModel = {
+    //         nickname: this.formReceiver.get('nickname').value,
+    //         agency: this.formReceiver.get('agency').value,
+    //         account: this.formReceiver.get('account').value,
+    //         account_digit: this.formReceiver.get('account_digit').value
+    //     }
+    //     this.userService.addContact(parseInt(this.user.cpf), contact)
+    //         .subscribe(res => console.log(res))
+    // }
 
     public searchReceiver() {
         const agency = this.formReceiver.get('agency').value
@@ -110,19 +147,26 @@ export class SendMoneyComponent implements OnInit, OnDestroy {
     }
 
     public transfer() {
-        this.transactionService.transfer(this.transaction)
-            .subscribe(
-                res => {
-                    this.bankAccountService.getSubject(this.user)
-                    this.alertService.success('Transferência concluída :).', false)
-                    this.closeTransferDialog()
-                }, 
-                err => {
-                    console.log(err)
-                    this.loadingService.stop()
-                    if(err.error) this.alertService.danger(err.error.message, false)
-                    else this.alertService.warning('Algo não ocorreu bem. Tente novamente!', false)
-                })
+        if(this.userService.isLogged()) {
+            this.transactionService.transfer(this.transaction)
+                .subscribe(
+                    res => {
+                        this.bankAccountService.getSubject(this.user)
+                        this.alertService.success('Transferência concluída :).', false)
+                        this.closeTransferDialog()
+                    },
+                    err => {
+                        console.log(err)
+                        this.loadingService.stop()
+                        if(err.error) this.alertService.danger(err.error.message, false)
+                        else this.alertService.warning('Algo não ocorreu bem. Tente novamente!', false)
+                    })
+        }
+        else {
+            this.loadingService.stop()
+            this.closeTransferDialog()
+            this.alertService.danger('Sua sessão expirou. Tente novamente.', false)
+        }
     }
 
     public closeTransferDialog() {

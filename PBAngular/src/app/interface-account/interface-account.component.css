@@ -29,7 +29,8 @@
     width: 175px;
     height: 175px;
     border-radius: 10px;
-    background: white;
+    background: grey;
+    box-shadow: rgba(0, 0, 0, .2) 1px 1px 5px;
 }
 
 .pb-balance {
@@ -63,4 +64,10 @@
 
 .show {
     transition: all .5s ease;
+}
+
+.img mat-icon:hover {
+    filter: invert(100%);
+    transition: all .5s ease;
+
 }

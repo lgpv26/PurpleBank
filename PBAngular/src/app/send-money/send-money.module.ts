@@ -8,13 +8,12 @@ import { MatInputModule } from '@angular/material/input';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatIconModule} from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ConfirmTransferComponent } from './confirm-transfer/confirm-transfer.component';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 @NgModule({
-    declarations: [SendMoneyComponent, ConfirmTransferComponent],
+    declarations: [SendMoneyComponent],
     imports: [CommonModule, MatDialogModule, MatButtonModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatStepperModule, MatIconModule],
-    entryComponents: [SendMoneyComponent, ConfirmTransferComponent],
+    entryComponents: [SendMoneyComponent],
     providers: [
         {
             provide: STEPPER_GLOBAL_OPTIONS,

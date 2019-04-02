@@ -1,5 +1,6 @@
 const passport = require('passport')
 const _ = require('lodash')
+const fs = require('fs')
 
 const AccountUser = require('../models/user.model')
 const BankAccount = require('../models/bank-account.model')
@@ -23,6 +24,25 @@ module.exports.register = (req, res, next) => {
             return res.send(doc)
         }
     })
+}
+
+module.exports.addProfileImage = (req, res) => {
+    if(req.file.bytes > 80000) return res.status(422).json({status: false, message: 'Imagem grande de mais, tente outra.'})
+    else AccountUser.findOneAndUpdate({cpf: req.body.document}, {img: req.file.url},
+        (err, user) => {
+            if(err) return next(err)
+            if(!user) return res.status(404).json({status: false, message: 'Não foi possível encontrar o usuário.'})
+            else return res.status(200).json({status: true, message: 'Foto de perfil adicionada com sucesso!'})
+        })
+}
+
+module.exports.removeProfileImage = (req, res) => {
+    AccountUser.findOneAndUpdate({cpf: req.params.document}, {img: ''},
+        (err, user) => {
+            if(err) return next(err)
+            if(!user) return res.status(404).json({status: false, message: 'Não foi possível encontrar o usuário.'})
+            else return res.status(200).json({status: true, message: 'Foto de perfil removida!'})
+        })
 }
 
 module.exports.createBankAccount = (req, res, next) => {
@@ -68,7 +88,7 @@ module.exports.userAccount = (req, res, next) => {
     AccountUser.findOne({ _id: req._id },
         (err, user) => {
             if(!user) return res.status(404).json({status: false, message: 'Conta de usuário não encontrada.'})
-            else return res.status(200).json({status: true, user: _.pick(user, ['fullName', 'email', 'cpf', 'phone', 'img'])})
+            else return res.status(200).json({status: true, user: _.pick(user, ['fullName', 'email', 'cpf', 'phone', 'img', 'contacts'])})
         })
 }
 

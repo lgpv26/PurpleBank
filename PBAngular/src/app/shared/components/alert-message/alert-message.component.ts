@@ -21,7 +21,7 @@ export class AlertMessageComponent {
                         return
                     }
 
-                    if(this.alerts.length >= 2) this.alerts.shift()
+                    if(this.alerts.length >= 1) this.alerts.shift()
                     else this.alerts.push(alert)
 
                     setTimeout(() => this.removeAlert(alert), this.timeout)

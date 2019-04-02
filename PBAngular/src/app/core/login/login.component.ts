@@ -53,8 +53,8 @@ export class LoginComponent implements OnInit, OnDestroy{
                 res => {
                     this.tokenService.setToken(res['token'])
                     this.dialogService.closeAllDialogs()
-                    this.userAccountService.getUserAccountSubject()
-                    this.router.navigate(['user-account'])
+                    //this.userAccountService.getUserAccountSubject()
+                    this.router.navigate(['/user-account'])
                 },
                 (err: HttpErrorResponse) => {
                     this.loadingService.stop()

@@ -23,7 +23,7 @@ export class HeaderComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.userAccountService.getUserAccountSubject()
+        //this.userAccountService.getUserAccountSubject()
     }
 
     public openLoginDialog() {

@@ -11,6 +11,7 @@ import { LoadingModule } from './shared/components/loading/loading.module';
 import { DepositIntoAccountModule } from './deposit-into-account/deposit-into-account.module';
 import { SendMoneyModule } from './send-money/send-money.module';
 import { TransactionHistoryModule } from './transation-history/transaction-history.module';
+import { ContactsModule } from './contacts/contacts.module';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { TransactionHistoryModule } from './transation-history/transaction-histo
     TransactionHistoryModule,
     HomeModule,
     InterfaceAccountModule,
+    ContactsModule,
     AppRoutingModule
   ],
   providers: [],
