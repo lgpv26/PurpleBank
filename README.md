@@ -53,7 +53,7 @@ são atualizados com o novo valor.
 
 **Histórico de transação:**  
 Toda transação feita é salva no banco de dados, mas apenas as últimas 10 são apresentadas na interface por ordem de criação.  
-O usuário pode buscar por tipo (Depósito/DEP, Tranferência/TED e todas) e por descrição.
+O usuário pode buscar por tipo (Depósito/DEP, Transferência/TED e todas) e por descrição.
 ![Visualizando o histórico de transação](ApresentacaoPB/pb-apres-transactions.gif)
 
 **Sessão expirada:**  
